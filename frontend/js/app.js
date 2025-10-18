@@ -7,7 +7,7 @@
 const CONFIG = {
     API_BASE_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
         ? 'http://localhost:8000'  // Local development
-        : 'https://my-hifz-api.onrender.com',  // Production (Render)
+        : 'https://my-hifz.onrender.com',  // Production (Render)
     API_ENDPOINT: '/api/v1/plan/generate'
 };
 
