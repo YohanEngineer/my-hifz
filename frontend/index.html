@@ -64,7 +64,7 @@
                             </label>
                             <input
                                 type="number"
-                                class="form-control form-control-lg"
+                                class="form-control"
                                 id="pagesPerPeriod"
                                 name="pagesPerPeriod"
                                 min="1"
@@ -89,7 +89,7 @@
                                 Type de période <span class="text-danger" aria-label="champ requis">*</span>
                             </label>
                             <select
-                                class="form-select form-select-lg"
+                                class="form-select"
                                 id="periodType"
                                 name="periodType"
                                 required
@@ -112,7 +112,7 @@
                             </label>
                             <input
                                 type="number"
-                                class="form-control form-control-lg"
+                                class="form-control"
                                 id="startPage"
                                 name="startPage"
                                 min="1"
@@ -137,7 +137,7 @@
                                 Ordre de mémorisation <span class="text-danger" aria-label="champ requis">*</span>
                             </label>
                             <select
-                                class="form-select form-select-lg"
+                                class="form-select"
                                 id="order"
                                 name="order"
                                 required
@@ -154,10 +154,10 @@
                     </div>
 
                     <!-- Submit Button -->
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-5">
                         <button
                             type="submit"
-                            class="btn btn-primary btn-lg px-5"
+                            class="btn btn-primary px-5"
                             id="generateBtn"
                         >
                             <i class="bi bi-file-earmark-pdf me-2" aria-hidden="true"></i>
@@ -169,44 +169,32 @@
         </div>
 
         <!-- Features Section -->
-        <div class="row g-4 mt-4">
+        <div class="row g-4 mt-3">
             <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon bg-primary bg-opacity-10 rounded-circle p-3 d-inline-flex mb-3">
-                            <i class="bi bi-check-circle-fill fs-1 text-primary" aria-hidden="true"></i>
-                        </div>
-                        <h3 class="h5 card-title">Personnalisable</h3>
-                        <p class="card-text text-muted">
-                            Adaptez votre planning selon votre rythme et vos objectifs de mémorisation
-                        </p>
-                    </div>
+                <div class="feature-card">
+                    <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                    <h3>Personnalisable</h3>
+                    <p>
+                        Adaptez votre planning selon votre rythme et vos objectifs de mémorisation
+                    </p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon bg-primary bg-opacity-10 rounded-circle p-3 d-inline-flex mb-3">
-                            <i class="bi bi-file-earmark-pdf-fill fs-1 text-primary" aria-hidden="true"></i>
-                        </div>
-                        <h3 class="h5 card-title">Format PDF</h3>
-                        <p class="card-text text-muted">
-                            Téléchargez votre planning au format PDF pour l'imprimer ou le consulter hors ligne
-                        </p>
-                    </div>
+                <div class="feature-card">
+                    <i class="bi bi-file-earmark-pdf-fill" aria-hidden="true"></i>
+                    <h3>Format PDF</h3>
+                    <p>
+                        Téléchargez votre planning au format PDF pour l'imprimer ou le consulter hors ligne
+                    </p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon bg-primary bg-opacity-10 rounded-circle p-3 d-inline-flex mb-3">
-                            <i class="bi bi-phone-fill fs-1 text-primary" aria-hidden="true"></i>
-                        </div>
-                        <h3 class="h5 card-title">Multi-support</h3>
-                        <p class="card-text text-muted">
-                            Compatible avec tous vos appareils : ordinateur, tablette et smartphone
-                        </p>
-                    </div>
+                <div class="feature-card">
+                    <i class="bi bi-phone-fill" aria-hidden="true"></i>
+                    <h3>Multi-support</h3>
+                    <p>
+                        Compatible avec tous vos appareils : ordinateur, tablette et smartphone
+                    </p>
                 </div>
             </div>
         </div>
