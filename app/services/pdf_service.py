@@ -143,7 +143,7 @@ class PDFService:
             spaceAfter=12,
             alignment=TA_CENTER
         )
-        elements.append(Paragraph("Planning de Mémorisation du Hifz", title_style))
+        elements.append(Paragraph("Planning de Mémorisation", title_style))
 
         # Settings info
         info_style = ParagraphStyle(
@@ -181,6 +181,16 @@ class PDFService:
         Returns:
             Table object
         """
+        # Create paragraph style for Arabic text
+        arabic_style = ParagraphStyle(
+            'ArabicStyle',
+            fontName=self.arabic_font_name if self.has_arabic_font else 'Helvetica',
+            fontSize=11,
+            alignment=TA_RIGHT,
+            leading=14,  # Line height for wrapped text
+            wordWrap='RTL'  # Right-to-left word wrapping
+        )
+
         # Prepare table data with French headers
         data = [
             ['Période', 'Pages', 'Sourates (Arabe)', 'Juz']
@@ -191,13 +201,16 @@ class PDFService:
             arabic_surahs = [self._process_arabic_text(surah) for surah in period['surahs_ar']]
             surahs_text = ' ، '.join(arabic_surahs)  # Using Arabic comma
 
+            # Wrap surahs text in Paragraph for automatic text wrapping
+            surahs_paragraph = Paragraph(surahs_text, arabic_style)
+
             # Format juzs
             juzs_text = ', '.join(map(str, period['juzs']))
 
             data.append([
                 period['period_label'],
                 period['page_range'],
-                surahs_text,
+                surahs_paragraph,  # Use Paragraph instead of plain text
                 juzs_text
             ])
 
@@ -219,12 +232,13 @@ class PDFService:
             ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
             ('ALIGN', (0, 1), (1, -1), 'CENTER'),  # Period and Pages columns centered
             ('ALIGN', (3, 1), (3, -1), 'CENTER'),  # Juz column centered
-            ('ALIGN', (2, 1), (2, -1), 'RIGHT'),   # Arabic column right-aligned
             ('FONTNAME', (0, 1), (1, -1), 'Helvetica'),  # Period and Pages
             ('FONTNAME', (3, 1), (3, -1), 'Helvetica'),  # Juz
-            ('FONTSIZE', (0, 1), (-1, -1), 10),
+            ('FONTSIZE', (0, 1), (1, -1), 10),  # Period and Pages columns
+            ('FONTSIZE', (3, 1), (3, -1), 10),  # Juz column
             ('TOPPADDING', (0, 1), (-1, -1), 8),
             ('BOTTOMPADDING', (0, 1), (-1, -1), 8),
+            ('VALIGN', (0, 1), (-1, -1), 'MIDDLE'),  # Vertical alignment for wrapped text
 
             # Grid
             ('GRID', (0, 0), (-1, -1), 1, colors.grey),
@@ -232,11 +246,6 @@ class PDFService:
             # Alternating row colors
             ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.lightgrey]),
         ]
-
-        # Add Arabic font for Surah column if available
-        if self.has_arabic_font:
-            style_list.append(('FONTNAME', (2, 1), (2, -1), self.arabic_font_name))
-            style_list.append(('FONTSIZE', (2, 1), (2, -1), 11))
 
         table.setStyle(TableStyle(style_list))
 
