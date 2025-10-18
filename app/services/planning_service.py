@@ -112,7 +112,7 @@ class PlanningService:
             page_data_list = [all_pages[page_num - 1] for page_num in period_pages]
 
             # Extract unique surahs and juzs
-            surahs_en = self._extract_unique_surahs(page_data_list)
+            surahs_en, surahs_ar = self._extract_unique_surahs(page_data_list)
             juzs = self._extract_unique_juzs(page_data_list)
 
             # Create page range string
@@ -128,6 +128,7 @@ class PlanningService:
                 "period_label": period_label,
                 "page_range": page_range,
                 "surahs_en": surahs_en,
+                "surahs_ar": surahs_ar,
                 "juzs": juzs
             })
 
@@ -135,22 +136,25 @@ class PlanningService:
 
         return schedule
 
-    def _extract_unique_surahs(self, page_data_list: List[PageData]) -> List[str]:
+    def _extract_unique_surahs(self, page_data_list: List[PageData]) -> tuple[List[str], List[str]]:
         """
-        Extract unique Surah English names from page data.
+        Extract unique Surah names from page data.
 
         Args:
             page_data_list: List of page data
 
         Returns:
-            List of unique Surah English names
+            Tuple of (English names list, Arabic names list)
         """
-        surahs = set()
+        surah_map = {}  # Map english name to arabic name
         for page in page_data_list:
             for ayah in page.ayahs:
-                surahs.add(ayah.surah.englishName)
+                surah_map[ayah.surah.englishName] = ayah.surah.name
 
-        return sorted(list(surahs))
+        sorted_english = sorted(surah_map.keys())
+        sorted_arabic = [surah_map[en] for en in sorted_english]
+
+        return sorted_english, sorted_arabic
 
     def _extract_unique_juzs(self, page_data_list: List[PageData]) -> List[int]:
         """
