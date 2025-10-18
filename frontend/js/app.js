@@ -77,7 +77,7 @@ async function handleFormSubmit(event) {
         // Show success alert with SweetAlert2
         Swal.fire({
             icon: 'success',
-            title: 'Succès !',
+            title: 'الحمد لله',
             text: 'Votre planning a été généré avec succès !',
             confirmButtonColor: '#2d8659',
             confirmButtonText: 'OK'
@@ -88,7 +88,7 @@ async function handleFormSubmit(event) {
         // Show error alert with SweetAlert2
         Swal.fire({
             icon: 'error',
-            title: 'Erreur',
+            title: 'خير إن شاء الله',
             text: 'Une erreur est survenue lors de la génération du planning. Veuillez réessayer.',
             confirmButtonColor: '#2d8659',
             confirmButtonText: 'OK'
@@ -349,7 +349,7 @@ window.addEventListener('unhandledrejection', (event) => {
     if (event.reason && event.reason.message && event.reason.message.includes('fetch')) {
         Swal.fire({
             icon: 'error',
-            title: 'Erreur de connexion',
+            title: 'خير إن شاء الله',
             text: 'Impossible de se connecter au serveur. Veuillez vérifier que le serveur est en cours d\'exécution.',
             confirmButtonColor: '#2d8659',
             confirmButtonText: 'OK'
