@@ -58,10 +58,10 @@ async def root():
         "message": settings.API_TITLE,
         "version": settings.API_VERSION,
         "endpoints": {
-            "GET /api/quran/pages": "Get all Quran pages",
-            "GET /api/quran/pages/{page_number}": f"Get a specific page (1-{settings.TOTAL_PAGES})",
-            "GET /api/quran/pages/surah/{surah_number}": f"Get pages by Surah (1-{settings.TOTAL_SURAHS})",
-            "GET /api/quran/pages/juz/{juz_number}": f"Get pages by Juz (1-{settings.TOTAL_JUZ})",
+            "GET /api/v1/quran/pages": "Get all Quran pages",
+            "GET /api/v1/quran/pages/{page_number}": f"Get a specific page (1-{settings.TOTAL_PAGES})",
+            "GET /api/v1/quran/pages/surah/{surah_number}": f"Get pages by Surah (1-{settings.TOTAL_SURAHS})",
+            "GET /api/v1/quran/pages/juz/{juz_number}": f"Get pages by Juz (1-{settings.TOTAL_JUZ})",
             "POST /api/v1/plan/generate": "Generate memorization schedule PDF",
             "GET /health": "Health check"
         }

@@ -11,7 +11,7 @@ from app.services.quran_service import quran_service
 from app.config import logger, settings
 
 router = APIRouter(
-    prefix="/api/quran",
+    prefix="/api/v1/quran",
     tags=["quran"]
 )
 

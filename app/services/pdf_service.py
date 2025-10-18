@@ -5,6 +5,10 @@ Creates formatted PDF schedules for memorization plans.
 
 from io import BytesIO
 from typing import List, Dict
+from pathlib import Path
+import arabic_reshaper
+from bidi.algorithm import get_display
+
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -23,27 +27,47 @@ class PDFService:
 
     def __init__(self):
         """Initialize PDF service and register Arabic font."""
-        # Register Arabic font (using a font that supports Arabic)
-        # Note: ReportLab includes some basic fonts, but for production,
-        # you should include a proper Arabic font file
+        self.arabic_font_name = "Amiri"
         self.has_arabic_font = self._register_arabic_font()
 
     def _register_arabic_font(self) -> bool:
         """
-        Register an Arabic font if available.
+        Register an Arabic font for proper rendering.
 
         Returns:
             True if Arabic font was registered successfully
         """
         try:
-            # Try to use a system Arabic font
-            # For production, include a TTF file like "NotoNaskhArabic-Regular.ttf"
-            # For now, we'll use ReportLab's built-in Helvetica which has limited Arabic support
-            logger.info("Using built-in font for Arabic (limited support)")
-            return False
+            # Get the font file path
+            font_path = Path(__file__).parent.parent / "fonts" / "Amiri-Regular.ttf"
+
+            if not font_path.exists():
+                logger.warning(f"Arabic font file not found at {font_path}")
+                return False
+
+            # Register the font
+            pdfmetrics.registerFont(TTFont(self.arabic_font_name, str(font_path)))
+            logger.info(f"Successfully registered Arabic font: {self.arabic_font_name}")
+            return True
         except Exception as e:
-            logger.warning(f"Could not register Arabic font: {e}")
+            logger.error(f"Could not register Arabic font: {e}")
             return False
+
+    def _process_arabic_text(self, text: str) -> str:
+        """
+        Process Arabic text for proper rendering in PDF.
+
+        Args:
+            text: Arabic text to process
+
+        Returns:
+            Processed text ready for PDF rendering
+        """
+        # Reshape Arabic text (connect characters properly)
+        reshaped_text = arabic_reshaper.reshape(text)
+        # Apply bidirectional algorithm for RTL text
+        bidi_text = get_display(reshaped_text)
+        return bidi_text
 
     def generate_schedule_pdf(
         self,
@@ -158,8 +182,9 @@ class PDFService:
         ]
 
         for period in schedule:
-            # Format surahs - use Arabic names
-            surahs_text = ', '.join(period['surahs_ar'])
+            # Format surahs - use Arabic names with proper processing
+            arabic_surahs = [self._process_arabic_text(surah) for surah in period['surahs_ar']]
+            surahs_text = ' ، '.join(arabic_surahs)  # Using Arabic comma
 
             # Format juzs
             juzs_text = ', '.join(map(str, period['juzs']))
@@ -175,7 +200,7 @@ class PDFService:
         table = Table(data, colWidths=[1*inch, 1*inch, 3.5*inch, 1*inch])
 
         # Style the table
-        table.setStyle(TableStyle([
+        style_list = [
             # Header row
             ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#3498DB')),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
@@ -184,13 +209,14 @@ class PDFService:
             ('FONTSIZE', (0, 0), (-1, 0), 12),
             ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
 
-            # Data rows
+            # Data rows - default font
             ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
             ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
             ('ALIGN', (0, 1), (1, -1), 'CENTER'),  # Period and Pages columns centered
             ('ALIGN', (3, 1), (3, -1), 'CENTER'),  # Juz column centered
             ('ALIGN', (2, 1), (2, -1), 'RIGHT'),   # Arabic column right-aligned
-            ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+            ('FONTNAME', (0, 1), (1, -1), 'Helvetica'),  # Period and Pages
+            ('FONTNAME', (3, 1), (3, -1), 'Helvetica'),  # Juz
             ('FONTSIZE', (0, 1), (-1, -1), 10),
             ('TOPPADDING', (0, 1), (-1, -1), 8),
             ('BOTTOMPADDING', (0, 1), (-1, -1), 8),
@@ -200,7 +226,14 @@ class PDFService:
 
             # Alternating row colors
             ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.lightgrey]),
-        ]))
+        ]
+
+        # Add Arabic font for Surah column if available
+        if self.has_arabic_font:
+            style_list.append(('FONTNAME', (2, 1), (2, -1), self.arabic_font_name))
+            style_list.append(('FONTSIZE', (2, 1), (2, -1), 11))
+
+        table.setStyle(TableStyle(style_list))
 
         return table
 
