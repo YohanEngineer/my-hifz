@@ -199,6 +199,8 @@ class PDFService:
         for period in schedule:
             # Format surahs - use Arabic names with proper processing
             arabic_surahs = [self._process_arabic_text(surah) for surah in period['surahs_ar']]
+            # Reverse order for RTL display (so Al-Fatiha appears on the right, then Al-Baqarah)
+            arabic_surahs.reverse()
             surahs_text = ' ، '.join(arabic_surahs)  # Using Arabic comma
 
             # Wrap surahs text in Paragraph for automatic text wrapping
