@@ -121,7 +121,20 @@ function validateForm() {
  * Validate pages per period input
  */
 function validatePagesInput() {
-    const value = parseInt(this.value);
+    let value = parseInt(this.value);
+
+    // Limit to max 604
+    if (value > 604) {
+        this.value = 604;
+        value = 604;
+    }
+
+    // Limit to min 1
+    if (value < 1 && this.value !== '') {
+        this.value = 1;
+        value = 1;
+    }
+
     if (isNaN(value) || value < 1 || value > 604) {
         this.classList.add('is-invalid');
         this.classList.remove('is-valid');
@@ -135,7 +148,20 @@ function validatePagesInput() {
  * Validate start page input
  */
 function validateStartPageInput() {
-    const value = parseInt(this.value);
+    let value = parseInt(this.value);
+
+    // Limit to max 604
+    if (value > 604) {
+        this.value = 604;
+        value = 604;
+    }
+
+    // Limit to min 1
+    if (value < 1 && this.value !== '') {
+        this.value = 1;
+        value = 1;
+    }
+
     if (isNaN(value) || value < 1 || value > 604) {
         this.classList.add('is-invalid');
         this.classList.remove('is-valid');
