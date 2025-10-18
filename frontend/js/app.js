@@ -15,7 +15,6 @@ const CONFIG = {
 const elements = {
     form: null,
     generateBtn: null,
-    alertContainer: null,
     loadingSpinner: null,
     pagesPerPeriod: null,
     periodType: null,
@@ -30,7 +29,6 @@ function init() {
     // Cache DOM elements
     elements.form = document.getElementById('planningForm');
     elements.generateBtn = document.getElementById('generateBtn');
-    elements.alertContainer = document.getElementById('alertContainer');
     elements.loadingSpinner = document.getElementById('loadingSpinner');
     elements.pagesPerPeriod = document.getElementById('pagesPerPeriod');
     elements.periodType = document.getElementById('periodType');
@@ -56,7 +54,13 @@ async function handleFormSubmit(event) {
 
     // Validate form
     if (!validateForm()) {
-        showAlert('Veuillez corriger les erreurs dans le formulaire', 'danger');
+        Swal.fire({
+            icon: 'warning',
+            title: 'Attention',
+            text: 'Veuillez corriger les erreurs dans le formulaire',
+            confirmButtonColor: '#2d8659',
+            confirmButtonText: 'OK'
+        });
         return;
     }
 
@@ -69,13 +73,26 @@ async function handleFormSubmit(event) {
     try {
         // Call API to generate PDF
         await generatePDF(formData);
-        showAlert('Votre planning a été généré avec succès !', 'success');
+
+        // Show success alert with SweetAlert2
+        Swal.fire({
+            icon: 'success',
+            title: 'Succès !',
+            text: 'Votre planning a été généré avec succès !',
+            confirmButtonColor: '#2d8659',
+            confirmButtonText: 'OK'
+        });
     } catch (error) {
         console.error('Error generating PDF:', error);
-        showAlert(
-            'Une erreur est survenue lors de la génération du planning. Veuillez réessayer.',
-            'danger'
-        );
+
+        // Show error alert with SweetAlert2
+        Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Une erreur est survenue lors de la génération du planning. Veuillez réessayer.',
+            confirmButtonColor: '#2d8659',
+            confirmButtonText: 'OK'
+        });
     } finally {
         setLoadingState(false);
     }
@@ -330,10 +347,13 @@ window.addEventListener('unhandledrejection', (event) => {
     console.error('Unhandled promise rejection:', event.reason);
 
     if (event.reason && event.reason.message && event.reason.message.includes('fetch')) {
-        showAlert(
-            'Impossible de se connecter au serveur. Veuillez vérifier que le serveur est en cours d\'exécution.',
-            'danger'
-        );
+        Swal.fire({
+            icon: 'error',
+            title: 'Erreur de connexion',
+            text: 'Impossible de se connecter au serveur. Veuillez vérifier que le serveur est en cours d\'exécution.',
+            confirmButtonColor: '#2d8659',
+            confirmButtonText: 'OK'
+        });
     }
 });
 
