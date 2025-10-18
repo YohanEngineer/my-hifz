@@ -220,8 +220,6 @@ function setLoadingState(isLoading) {
         // Hide the form to prevent any interaction
         elements.form.style.opacity = '0.5';
         elements.form.style.pointerEvents = 'none';
-        // Announce to screen readers
-        announceToScreenReader('Génération du planning en cours, veuillez patienter');
     } else {
         // Hide loading spinner
         elements.loadingSpinner.classList.add('d-none');
