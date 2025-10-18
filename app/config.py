@@ -50,7 +50,11 @@ class Settings:
     API_VERSION = "1.0.0"
 
     # CORS Configuration
-    CORS_ORIGINS = ["*"]  # In production, specify exact origins
+    CORS_ORIGINS = [
+        "http://localhost:5500",  # Local development (Live Server)
+        "http://127.0.0.1:5500",  # Local development (Live Server)
+        "https://yohanengineer.github.io",  # GitHub Pages production
+    ]
     CORS_ALLOW_CREDENTIALS = True
     CORS_ALLOW_METHODS = ["*"]
     CORS_ALLOW_HEADERS = ["*"]

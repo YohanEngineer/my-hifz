@@ -37,6 +37,10 @@ ENV/
 *.swo
 *~
 
+# Testing
+.coverage
+.pytest_cache/
+
 # OS
 .DS_Store
 Thumbs.db
