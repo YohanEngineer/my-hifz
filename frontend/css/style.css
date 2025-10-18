@@ -17,6 +17,12 @@
     --dark-gray: #343a40;
 }
 
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 /* Override Bootstrap primary color with green */
 .btn-primary,
 .bg-primary {
@@ -45,10 +51,12 @@ body {
     display: flex;
     flex-direction: column;
     background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
 }
 
 main {
-    flex: 1;
+    flex: 1 0 auto;
 }
 
 /* Header styles */
@@ -166,6 +174,7 @@ header {
 
 /* Footer */
 footer {
+    flex-shrink: 0;
     margin-top: auto;
     border-top: 1px solid #e0e0e0;
     background: white;
