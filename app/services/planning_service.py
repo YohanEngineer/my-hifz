@@ -121,8 +121,8 @@ class PlanningService:
             else:
                 page_range = f"{period_pages[0]}-{period_pages[-1]}"
 
-            # Create period label
-            period_label = f"{'Day' if period_type == 'Daily' else 'Week'} {period_number}"
+            # Create period label (in French)
+            period_label = f"{'Jour' if period_type == 'Daily' else 'Semaine'} {period_number}"
 
             schedule.append({
                 "period_label": period_label,

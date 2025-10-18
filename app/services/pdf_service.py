@@ -143,7 +143,7 @@ class PDFService:
             spaceAfter=12,
             alignment=TA_CENTER
         )
-        elements.append(Paragraph("Hifz Memorization Schedule", title_style))
+        elements.append(Paragraph("Planning de Mémorisation du Hifz", title_style))
 
         # Settings info
         info_style = ParagraphStyle(
@@ -154,11 +154,16 @@ class PDFService:
             spaceAfter=6
         )
 
+        # Translate period type
+        period_type_fr = "jour" if settings.period_type == "Daily" else "semaine"
+
+        # Translate order
+        order_fr = "Croissant" if settings.order == "Ascending" else "Décroissant"
+
         settings_info = [
-            f"<b>Pace:</b> {settings.pages_per_period} pages per {settings.period_type.lower()}",
-            f"<b>Starting Page:</b> {settings.start_page}",
-            f"<b>Order:</b> {settings.order}",
-            f"<b>Total Periods:</b> Will be calculated"
+            f"<b>Rythme :</b> {settings.pages_per_period} pages par {period_type_fr}",
+            f"<b>Page de départ :</b> {settings.start_page}",
+            f"<b>Ordre :</b> {order_fr}"
         ]
 
         for info in settings_info:
@@ -176,9 +181,9 @@ class PDFService:
         Returns:
             Table object
         """
-        # Prepare table data
+        # Prepare table data with French headers
         data = [
-            ['Period', 'Pages', 'Surahs (Arabic)', 'Juz']
+            ['Période', 'Pages', 'Sourates (Arabe)', 'Juz']
         ]
 
         for period in schedule:
