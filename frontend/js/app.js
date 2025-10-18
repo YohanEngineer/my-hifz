@@ -215,21 +215,19 @@ async function generatePDF(data) {
  */
 function setLoadingState(isLoading) {
     if (isLoading) {
+        // Show full-screen loading spinner
         elements.loadingSpinner.classList.remove('d-none');
-        elements.generateBtn.disabled = true;
-        elements.generateBtn.innerHTML = `
-            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-            Génération en cours...
-        `;
+        // Hide the form to prevent any interaction
+        elements.form.style.opacity = '0.5';
+        elements.form.style.pointerEvents = 'none';
         // Announce to screen readers
         announceToScreenReader('Génération du planning en cours, veuillez patienter');
     } else {
+        // Hide loading spinner
         elements.loadingSpinner.classList.add('d-none');
-        elements.generateBtn.disabled = false;
-        elements.generateBtn.innerHTML = `
-            <i class="bi bi-file-earmark-pdf me-2" aria-hidden="true"></i>
-            Générer mon planning PDF
-        `;
+        // Restore form
+        elements.form.style.opacity = '1';
+        elements.form.style.pointerEvents = 'auto';
     }
 }
 
