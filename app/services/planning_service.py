@@ -138,23 +138,26 @@ class PlanningService:
 
     def _extract_unique_surahs(self, page_data_list: List[PageData]) -> tuple[List[str], List[str]]:
         """
-        Extract unique Surah names from page data.
+        Extract unique Surah names from page data in order of appearance.
 
         Args:
             page_data_list: List of page data
 
         Returns:
-            Tuple of (English names list, Arabic names list)
+            Tuple of (English names list, Arabic names list) in order of appearance
         """
-        surah_map = {}  # Map english name to arabic name
+        seen_surahs = set()
+        ordered_english = []
+        ordered_arabic = []
+
         for page in page_data_list:
             for ayah in page.ayahs:
-                surah_map[ayah.surah.englishName] = ayah.surah.name
+                if ayah.surah.englishName not in seen_surahs:
+                    seen_surahs.add(ayah.surah.englishName)
+                    ordered_english.append(ayah.surah.englishName)
+                    ordered_arabic.append(ayah.surah.name)
 
-        sorted_english = sorted(surah_map.keys())
-        sorted_arabic = [surah_map[en] for en in sorted_english]
-
-        return sorted_english, sorted_arabic
+        return ordered_english, ordered_arabic
 
     def _extract_unique_juzs(self, page_data_list: List[PageData]) -> List[int]:
         """
