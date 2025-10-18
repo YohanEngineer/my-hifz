@@ -211,6 +211,11 @@ footer {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    main.container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
     .card-body {
         padding: 1.5rem;
     }
@@ -228,11 +233,35 @@ footer {
     .feature-card i {
         font-size: 2.5rem;
     }
+
+    header h1 {
+        font-size: 1.4rem;
+    }
+
+    header p {
+        font-size: 0.85rem;
+    }
 }
 
 @media (max-width: 576px) {
+    main.container {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        margin-top: 2rem !important;
+        margin-bottom: 2rem !important;
+    }
+
+    header {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+    }
+
     header h1 {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
+    }
+
+    header p {
+        font-size: 0.8rem;
     }
 
     .card-body {
@@ -241,6 +270,18 @@ footer {
 
     .row.g-4 > * {
         margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+        font-size: 0.9rem;
+    }
+
+    .feature-card {
+        padding: 1.25rem 1rem;
+    }
+
+    footer {
+        font-size: 0.85rem;
     }
 }
 
