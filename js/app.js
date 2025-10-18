@@ -225,26 +225,32 @@ async function generatePDF(data) {
         // Get the PDF blob
         const blob = await response.blob();
 
-        // Create download link
-        const downloadUrl = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = downloadUrl;
+        // Create object URL for the PDF
+        const pdfUrl = window.URL.createObjectURL(blob);
 
         // Generate filename with date
         const date = new Date().toISOString().split('T')[0];
         const periodType = data.period_type === 'Daily' ? 'Quotidien' : 'Hebdomadaire';
-        link.download = `Planning_Hifz_${periodType}_${date}.pdf`;
+        const filename = `Planning_Hifz_${periodType}_${date}.pdf`;
 
-        // Trigger download
-        document.body.appendChild(link);
-        link.click();
+        // 1. Open PDF in new tab
+        window.open(pdfUrl, '_blank');
 
-        // Cleanup
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(downloadUrl);
+        // 2. Trigger download
+        const downloadLink = document.createElement('a');
+        downloadLink.href = pdfUrl;
+        downloadLink.download = filename;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+
+        // Cleanup URL object after a delay to ensure both actions complete
+        setTimeout(() => {
+            window.URL.revokeObjectURL(pdfUrl);
+        }, 1000);
 
         // Announce to screen readers
-        announceToScreenReader('Le fichier PDF a été téléchargé avec succès');
+        announceToScreenReader('Le fichier PDF a été généré, ouvert dans un nouvel onglet et téléchargé');
 
     } catch (error) {
         console.error('Error in generatePDF:', error);
